@@ -4,18 +4,20 @@
 #include <iostream>
 #include <iomanip>
 #include "..\screen\screen.h"
+#include "donnees.h"
 using namespace std;
 
 #include "activite.h" 
 #include "eleve.h" 
 
-const int maxActivites = 10;
-const int maxEleves = 25;
-
-Activite lesActivites[maxActivites];
+Donnees lesDonneesDuProgramme;
+//const int maxActivites = 10;
+//const int maxEleves = 25;
+//
+//Activite lesActivites[maxActivites];
 int nombreActivitesReelles = 0;
 
-Eleve lesEleves[maxEleves];
+//Eleve lesEleves[maxEleves];
 int nombreElevesReels = 0;
 
 char AfficherMenu();
@@ -96,8 +98,8 @@ void AjouterActivite()
 	cin >> responsable;
 	//ajoutez les instructions permettant d'inscrire la nouvelle activité dans le tableau des activités
 	//utilisez nombreActivites comme indice pour le tableau
-	lesActivites[nombreActivitesReelles].InitialiserActivite(code, titre);
-	lesActivites[nombreActivitesReelles].AssignerUnResponsable(responsable);
+	lesDonneesDuProgramme.lesActivites[nombreActivitesReelles].InitialiserActivite(code, titre);
+	lesDonneesDuProgramme.lesActivites[nombreActivitesReelles].AssignerUnResponsable(responsable);
 
 	nombreActivitesReelles++;
 }
@@ -108,7 +110,7 @@ void AfficherLesActivites()
 	ClrScr();
 	for (int cpt = 0; cpt < nombreActivitesReelles; cpt++)
 	{
-		Afficher(lesActivites[cpt]);
+		Afficher(lesDonneesDuProgramme.lesActivites[cpt]);
 		//cout << lesActivites[cpt].getCodeActivite() << " -- " << lesActivites[cpt].getTitre() << " -- " << lesActivites[cpt].getResponsable() << endl;
 	}
 	_getch();
@@ -135,7 +137,7 @@ void AfficherLesEleves()
 	ClrScr();
 	for (int cpt = 0; cpt < nombreElevesReels; cpt++)
 	{
-		Afficher(lesEleves[cpt]);
+		Afficher(lesDonneesDuProgramme.lesEleves[cpt]);
 		//cout << lesEleves[cpt].getCodeEleve() << " -- " << lesEleves[cpt].getPrenom() << " -- " << lesEleves[cpt].getNom() << endl;
 	}
 	_getch();
@@ -143,7 +145,7 @@ void AfficherLesEleves()
 //----------------------------------------------------------------------------------------
 void InscrireUnEleve(string inCode, string inNom, string inPrenom)
 {
-	lesEleves[nombreElevesReels].InscrireEleve(inCode, inNom, inPrenom);
+	lesDonneesDuProgramme.lesEleves[nombreElevesReels].InscrireEleve(inCode, inNom, inPrenom);
 	nombreElevesReels++;
 }
 
@@ -160,14 +162,14 @@ void InscrireEleveActivite()
 	cptEleve = RechercherEleve(eleve);
 	if (cptEleve != maxEleves)
 	{
-		Afficher(lesEleves[cptEleve]);
+		Afficher(lesDonneesDuProgramme.lesEleves[cptEleve]);
 		cout << "Activite desiree: ";
 		cin >> activite;
 		cptActivite = RechercherActivite(activite);
 		if (cptActivite != maxActivites)
 		{
-			Afficher(lesActivites[cptActivite]);
-			lesEleves[cptEleve].InscrireAUneActivite(&lesActivites[cptActivite]);
+			Afficher(lesDonneesDuProgramme.lesActivites[cptActivite]);
+			lesDonneesDuProgramme.lesEleves[cptEleve].InscrireAUneActivite(&lesDonneesDuProgramme.lesActivites[cptActivite]);
 			cout << "inscription effectuee";
 		}
 		else
@@ -191,7 +193,7 @@ int RechercherEleve(string inCodeVoulu)
 	bool trouve = false;
 	while (trouve == false && cptEleve < maxEleves)
 	{
-		if (lesEleves[cptEleve].getCodeEleve() == inCodeVoulu)
+		if (lesDonneesDuProgramme.lesEleves[cptEleve].getCodeEleve() == inCodeVoulu)
 		{
 			trouve = true;
 		}
@@ -210,7 +212,7 @@ int RechercherActivite(string inCodeActiviteVoulue)
 	int cptActivite = 0;
 	while (trouve == false && cptActivite < maxActivites/*nombreActivites*/)
 	{
-		if (lesActivites[cptActivite].getCodeActivite() == inCodeActiviteVoulue)
+		if (lesDonneesDuProgramme.lesActivites[cptActivite].getCodeActivite() == inCodeActiviteVoulue)
 		{
 			trouve = true;
 		}
@@ -241,11 +243,11 @@ void AfficherLesInscriptions()
 	cin >> activite;
 	for (int cpt = 0; cpt < maxEleves; cpt++)
 	{
-		if (lesEleves[cpt].getActivite() != NULL)
+		if (lesDonneesDuProgramme.lesEleves[cpt].getActivite() != NULL)
 		{
-			if (lesEleves[cpt].getActivite()->getCodeActivite() == activite)
+			if (lesDonneesDuProgramme.lesEleves[cpt].getActivite()->getCodeActivite() == activite)
 			{
-				Afficher(lesEleves[cpt]);
+				Afficher(lesDonneesDuProgramme.lesEleves[cpt]);
 			}
 		}
 	}
